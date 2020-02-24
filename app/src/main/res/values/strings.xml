@@ -1,6 +1,7 @@
 <resources>
     <!--Start Screen-->
     <string name="app_name">Trek Mix</string>
+    <string name="start_stop_service_button_description">Button for starting or stopping background service</string>
 
 
     <!--Menu options-->

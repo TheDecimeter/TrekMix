@@ -3,6 +3,7 @@ package com.cs4530cpjd.trekmix;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cs4530cpjd.trekmix.service.ServiceStarter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ServiceStarter serviceStarter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        serviceStarter=new ServiceStarter(getApplicationContext());
         //the default setup had this floating button, I commented out its handler incase I wanted to
         //reference it later -Daniel
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -64,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void StartButtonEvent(View view) {
+        serviceStarter.run();
     }
 }

@@ -1,6 +1,8 @@
 package com.cs4530cpjd.trekmix.service;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,7 +12,6 @@ public class ServiceStarter implements Runnable {
     private static final String TAG ="Main";
 
     Activity activity;
-    GetLocation locationGetter;
 
     public ServiceStarter(Activity activity){
         this.activity=activity;
@@ -19,20 +20,20 @@ public class ServiceStarter implements Runnable {
     @Override
     public void run() {
 
-        Log.d(TAG,"Started Service");
+        Log.d(TAG,"Start Clicked");
         Toast. makeText(activity,"Start Clicked",Toast. LENGTH_SHORT).show();
 
-        if(locationGetter==null)
-            locationGetter=new GetLocation(activity);
-        else {
-            Toast. makeText(activity,"Already started",Toast. LENGTH_SHORT).show();
-            Log.d(TAG, "already started");
-        }
+        Intent intent = new Intent(activity, BackgroundMusicPlayer.class);
+        activity.startService(intent);
+
 
     }
+
 
     @Override
     public void finalize(){
 
     }
+
+
 }

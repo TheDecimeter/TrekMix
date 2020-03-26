@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        super
-                .onRequestPermissionsResult(requestCode,
+        super.onRequestPermissionsResult(requestCode,
                         permissions,
                         grantResults);
 

@@ -15,17 +15,18 @@ import java.util.LinkedList;
 
 
 /**
- * helper class to streamline permession requesting
+ * helper class to streamline permission requesting
  */
 public class Permissions {
     private static String TAG="PermReq";
-    
+
+    //to add permissions, add a constant below, a result object and link them with the 4 classes at the bottom
     public static final int C_READ_EXTERNAL_STORAGE =100, C_WRITE_EXTERNAL_STORAGE =101, C_ACCESS_FINE_LOCATION =102, C_ACCESS_COARSE_LOCATION =103;
     private static LinkedList<PermissionResult> ReadResult,WriteResult,FineLocationResult,CoarseLocationResult;
     private static Activity activity;
 
     public Permissions(Activity activity){
-        this.activity=activity;
+        Permissions.activity=activity;
         initResults();
     }
 
@@ -38,6 +39,11 @@ public class Permissions {
      *               granted or denied (access will be true if permission is granted)
      */
     public static void request(int requestCode, PermissionResult result){
+        if(activity==null){
+            Log.e(TAG,"Can not request permission without being linked" +
+                    " to an activity");
+            return;
+        }
         addRequestHandler(requestCode,result);
         if(Build.VERSION.SDK_INT>=23) {
             String permission=codeToPermission(requestCode);
@@ -57,6 +63,36 @@ public class Permissions {
             requestHandler(requestCode,new int [] {PackageManager.PERMISSION_GRANTED});
         }
     }
+
+
+
+    private static void addResultHandler(LinkedList<PermissionResult> results, PermissionResult result){
+        Log.d(TAG,"Add REQUEST itself ");
+        if(results==null){
+            Log.e(TAG,"trying to add callback before initializing callback stack");
+            return;
+        }
+        results.add(result);
+    }
+
+
+    private static void fireResults(LinkedList<PermissionResult> results,boolean allowed){
+        try {
+
+            Log.d(TAG,"fire request list size "+results.size());
+            for (PermissionResult r : results)
+                r.result(allowed);
+        }
+        catch(SecurityException e){
+            Toast.makeText(activity,
+                    "Security Exception thrown",
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
+        results.clear();
+    }
+
+
 
     /**
      * Handle requests, this should only be called in a request handler in the current activity
@@ -124,26 +160,5 @@ public class Permissions {
         CoarseLocationResult=new LinkedList<>();
     }
 
-    private static void addResultHandler(LinkedList<PermissionResult> results, PermissionResult result){
-        Log.d(TAG,"Add REQUEST itself ");
-        results.add(result);
-    }
-
-
-    private static void fireResults(LinkedList<PermissionResult> results,boolean allowed){
-        try {
-
-            Log.d(TAG,"fire request list size "+results.size());
-            for (PermissionResult r : results)
-                r.result(allowed);
-        }
-        catch(SecurityException e){
-            Toast.makeText(activity,
-                    "Security Exception thrown",
-                    Toast.LENGTH_SHORT)
-                    .show();
-        }
-        results.clear();
-    }
 
 }

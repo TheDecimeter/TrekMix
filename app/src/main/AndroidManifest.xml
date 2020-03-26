@@ -29,6 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".service.NotificationBroadcast">
+            <intent-filter>
+                <action android:name="com.cs4530cpjd.trekmix.service.next"/>
+                <action android:name="com.cs4530cpjd.trekmix.service.edit"/>
+                <action android:name="com.cs4530cpjd.trekmix.service.play"/>
+                <action android:name="com.cs4530cpjd.trekmix.service.pause"/>
+                <action android:name="com.cs4530cpjd.trekmix.service.kill"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".service.BackgroundMusicPlayer" />
     </application>
 

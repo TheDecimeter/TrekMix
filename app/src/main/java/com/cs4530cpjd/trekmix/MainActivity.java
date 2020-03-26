@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cs4530cpjd.trekmix.service.ServiceStarter;
+import com.cs4530cpjd.trekmix.utility.Permissions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private ServiceStarter serviceStarter;
+    private Permissions permissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        serviceStarter=new ServiceStarter(getApplicationContext());
+        serviceStarter=new ServiceStarter(this);
+        permissions=new Permissions(this);
         //the default setup had this floating button, I commented out its handler incase I wanted to
         //reference it later -Daniel
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -73,4 +78,19 @@ public class MainActivity extends AppCompatActivity {
     public void StartButtonEvent(View view) {
         serviceStarter.run();
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super
+                .onRequestPermissionsResult(requestCode,
+                        permissions,
+                        grantResults);
+
+        Log.v("Main","onRequest handler");
+        Permissions.requestHandler(requestCode,grantResults);
+    }
+
 }

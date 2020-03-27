@@ -49,8 +49,16 @@ public class ServiceStarter implements Runnable {
         Log.d(TAG,"Start Clicked");
         Toast. makeText(activity,"Start Clicked",Toast. LENGTH_SHORT).show();
 
+
         Intent intent = new Intent(activity, BackgroundMusicPlayer.class);
-        activity.startService(intent);
+        if(!BackgroundMusicPlayer.isActive()) {
+            Toast. makeText(activity,"Starting Player",Toast. LENGTH_SHORT).show();
+            activity.startService(intent);
+        }
+        else {
+            Toast. makeText(activity,"Ending Player",Toast. LENGTH_SHORT).show();
+            activity.stopService(intent);
+        }
 
 //        TutorialNotificationCreator();
     }

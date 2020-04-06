@@ -49,8 +49,11 @@ public class NotificationBroadcast extends BroadcastReceiver {
     public static void addObserver(NotificationBroadcastObserver observer){
         if(observers==null)
             observers=new HashSet<>();
-        if(observers.contains(observer))
+        if(observers.contains(observer)) {
+            Log.d(TAG,"already contained, did not add "+observer);
             return;
+        }
+        Log.d(TAG," added "+observer);
         observers.add(observer);
     }
 

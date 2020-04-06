@@ -147,7 +147,7 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         nc.getBigContentView().setTextViewText(R.id.textSongName,"Poo song"); //possible error here, suppressed
         nc.getBigContentView().setTextViewText(R.id.textLocName,loc);
 
-
+        nc.setOngoing(true);
 
         setListeners(expandedView,context);
 

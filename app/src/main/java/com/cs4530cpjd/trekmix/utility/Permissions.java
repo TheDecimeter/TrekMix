@@ -20,9 +20,9 @@ import java.util.LinkedList;
 public class Permissions {
     private static String TAG="PermReq";
 
-    //to add permissions, add a constant below, a result object and link them with the 4 classes at the bottom
-    public static final int C_READ_EXTERNAL_STORAGE =100, C_WRITE_EXTERNAL_STORAGE =101, C_ACCESS_FINE_LOCATION =102, C_ACCESS_COARSE_LOCATION =103;
-    private static LinkedList<PermissionResult> ReadResult,WriteResult,FineLocationResult,CoarseLocationResult;
+    //to add permissions, add a constant below, a result object and link them with the 4 methods at the bottom
+    public static final int C_READ_EXTERNAL_STORAGE =100, C_WRITE_EXTERNAL_STORAGE =101, C_ACCESS_FINE_LOCATION =102, C_ACCESS_COARSE_LOCATION =103, C_ACCESS_NETWORK_STATE=104, C_INTERNET=105;
+    private static LinkedList<PermissionResult> ReadResult,WriteResult,FineLocationResult,CoarseLocationResult,NetworkStateResult,InternetResult;
     private static Activity activity;
 
     public Permissions(Activity activity){
@@ -95,7 +95,8 @@ public class Permissions {
 
 
     /**
-     * Handle requests, this should only be called in a request handler in the current activity
+     * Handle requests, this should only be called in a request handler in the current activity,
+     * and it already is, so don't worry about it.
      * @param requestCode - The integer code for the request, e.g. C_READ_EXTERNAL_STORAGE
      * @param grantResults - Whether the permission was granted or not.
      */
@@ -113,6 +114,12 @@ public class Permissions {
                 break;
             case C_ACCESS_FINE_LOCATION:
                 fireResults(FineLocationResult,grantResults.length > 0&& grantResults[0] == PackageManager.PERMISSION_GRANTED);
+                break;
+            case C_ACCESS_NETWORK_STATE:
+                fireResults(NetworkStateResult,grantResults.length > 0&& grantResults[0] == PackageManager.PERMISSION_GRANTED);
+                break;
+            case C_INTERNET:
+                fireResults(InternetResult,grantResults.length > 0&& grantResults[0] == PackageManager.PERMISSION_GRANTED);
                 break;
         }
     }
@@ -132,6 +139,12 @@ public class Permissions {
             case C_ACCESS_FINE_LOCATION:
                 addResultHandler(FineLocationResult, result);
                 break;
+            case C_ACCESS_NETWORK_STATE:
+                addResultHandler(NetworkStateResult,result);
+                break;
+            case C_INTERNET:
+                addResultHandler(InternetResult,result);
+                break;
         }
     }
 
@@ -147,6 +160,10 @@ public class Permissions {
                 return Manifest.permission.ACCESS_COARSE_LOCATION;
             case C_ACCESS_FINE_LOCATION:
                 return Manifest.permission.ACCESS_FINE_LOCATION;
+            case C_ACCESS_NETWORK_STATE:
+                return Manifest.permission.ACCESS_NETWORK_STATE;
+            case C_INTERNET:
+                return Manifest.permission.INTERNET;
             default:
                 return"";
         }
@@ -158,6 +175,8 @@ public class Permissions {
         WriteResult=new LinkedList<>();
         FineLocationResult=new LinkedList<>();
         CoarseLocationResult=new LinkedList<>();
+        NetworkStateResult=new LinkedList<>();
+        InternetResult=new LinkedList<>();
     }
 
 

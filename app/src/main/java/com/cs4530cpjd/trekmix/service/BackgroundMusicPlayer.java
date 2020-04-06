@@ -1,6 +1,7 @@
 package com.cs4530cpjd.trekmix.service;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
@@ -140,6 +142,10 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         nc.setContentIntent(pendingIntent);
         nc.setSmallIcon(R.drawable.ic_notification_empty);
 //        nc.setAutoCancel(true);
+
+//        nc.setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+        nc.setCustomContentView(expandedView);
+
         nc.setCustomBigContentView(expandedView);
         nc.setContentTitle("Trek Mix");
         nc.setContentText("Control Audio");
@@ -147,7 +153,14 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         nc.getBigContentView().setTextViewText(R.id.textSongName,"Poo song"); //possible error here, suppressed
         nc.getBigContentView().setTextViewText(R.id.textLocName,loc);
 
+        nc.getContentView().setTextViewText(R.id.textSongName,"Poo song"); //possible error here, suppressed
+        nc.getContentView().setTextViewText(R.id.textLocName,loc);
+
         nc.setOngoing(true);
+
+
+//        if(Build.VERSION.SDK_INT>=21)
+//            nc.setStyle(new Notification.MediaStyle().setMediaSession(/*token*/)));
 
         setListeners(expandedView,context);
 
@@ -206,8 +219,9 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
 
     @SuppressLint("RestrictedApi") //getBigContentView gives errors which might be a bug in the system
     private void resetLocation(String readableLoc){
+        Log.d(TAG,"update notification "+readableLoc);
         notificationBuilder.getBigContentView().setTextViewText(R.id.textLocName,readableLoc);
-
+        notificationBuilder.getContentView().setTextViewText(R.id.textLocName,readableLoc);
 
         notificationManager.notify(NOTIFICATION_ID,notificationBuilder.build());
     }
@@ -215,8 +229,11 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
     @SuppressLint("RestrictedApi") //getBigContentView gives errors which might be a bug in the system
     private void resetSong(String songTitle, Bitmap newIage){
         notificationBuilder.getBigContentView().setTextViewText(R.id.textSongName,songTitle);
-        if(newIage!=null)
-            notificationBuilder.getBigContentView().setImageViewBitmap(R.id.albumImage,newIage);
+        notificationBuilder.getContentView().setTextViewText(R.id.textSongName,songTitle);
+        if(newIage!=null) {
+            notificationBuilder.getBigContentView().setImageViewBitmap(R.id.albumImage, newIage);
+            notificationBuilder.getContentView().setImageViewBitmap(R.id.albumImage, newIage);
+        }
 
         notificationManager.notify(NOTIFICATION_ID,notificationBuilder.build());
     }

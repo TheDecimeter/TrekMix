@@ -17,7 +17,7 @@ import com.cs4530cpjd.trekmix.utility.Permissions;
 
 /**
  * This class is the nuts and bolts of getting the location and keeping the specific
- * coordinates up to date
+ * coordinates up to date, for pin/region handling, use the MonitorLocation class
  */
 public class GetLocation {
     private static final String TAG="Main";
@@ -28,11 +28,6 @@ public class GetLocation {
     LocationManager locationManager;
     MonitorLocation locationMonitor;
 
-    public GetLocation(Activity activity,MonitorLocation locationMonitor) {
-        this.context = activity;
-        this.locationMonitor=locationMonitor;
-        SetupListener();
-    }
     public GetLocation(Context context,MonitorLocation locationMonitor) {
         this.context = context;
         this.locationMonitor=locationMonitor;
@@ -92,8 +87,6 @@ public class GetLocation {
             if(accepted) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
                 Location l=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Toast. makeText(context,"got loc",Toast. LENGTH_SHORT).show();
-                Toast. makeText(context,"got loc "+l.getLatitude(),Toast. LENGTH_SHORT).show();
             }
             else{
                 locationManager=null;

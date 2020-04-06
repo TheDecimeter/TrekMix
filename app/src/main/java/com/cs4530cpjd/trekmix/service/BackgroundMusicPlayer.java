@@ -36,6 +36,8 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
     private static final String ChannelID="TREK_MIX_CHANNEL";
     private static final String ChannelDes="Location based music player channel";
     private static final String ChannelName="Location based music";
+    private static final String NotificationTitle="Trek Mix";
+    private static final String NotificationText="Control Audio";
 
     private static final int NOTIFICATION_ID=88;
 
@@ -147,8 +149,8 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         nc.setCustomContentView(expandedView);
 
         nc.setCustomBigContentView(expandedView);
-        nc.setContentTitle("Trek Mix");
-        nc.setContentText("Control Audio");
+        nc.setContentTitle(NotificationTitle);
+        nc.setContentText(NotificationText);
 
         nc.getBigContentView().setTextViewText(R.id.textSongName,"Poo song"); //possible error here, suppressed
         nc.getBigContentView().setTextViewText(R.id.textLocName,loc);
@@ -271,6 +273,9 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         }
         else if(action.equals(NOTIFY_EDIT)){
             Log.d(TAG,"notify edti");
+
+            Intent closeIntent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            sendBroadcast(closeIntent);
 
             Intent intent=new Intent(this, SettingsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK

@@ -50,17 +50,23 @@ public class NotificationBroadcast extends BroadcastReceiver {
         if(observers==null)
             observers=new HashSet<>();
         if(observers.contains(observer)) {
-            Log.d(TAG,"already contained, did not add "+observer);
+            //added this because sometimes the buttons don't work, can't reliably reproduce
+            // but hopefully this fixes it.
+            observers.remove(observer);
+            observers.add(observer);
+            Log.d(TAG,"already contained, updated observer "+observer);
             return;
         }
-        Log.d(TAG," added "+observer);
         observers.add(observer);
+        Log.d(TAG," added "+observer+" broadcasting to "+observers.size()+" observers");
     }
 
     public static void removeObserver(NotificationBroadcastObserver observer){
         if(observers==null)
             return;
-        if(observers.contains(observer))
+        if(observers.contains(observer)) {
             observers.remove(observer);
+            Log.d(TAG,"  removing "+observer+" broadcasting to "+observers.size()+" observers");
+        }
     }
 }

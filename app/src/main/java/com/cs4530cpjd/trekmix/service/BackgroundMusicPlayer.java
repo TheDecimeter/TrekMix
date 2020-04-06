@@ -169,7 +169,8 @@ public class BackgroundMusicPlayer extends Service implements LocationObserver, 
         this.notificationManager=nm;
         this.notificationBuilder=nc;
 
-        nm.notify(NOTIFICATION_ID,nc.build());
+//        nm.notify(NOTIFICATION_ID,nc.build());
+        startForeground(NOTIFICATION_ID,nc.build());
 
     }
 
